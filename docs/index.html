@@ -1,0 +1,271 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta name="color-scheme" content="light dark">
+<title>Ghostflow Android 配信ページ</title>
+<style>
+  :root {
+    --bg: #f7f7f5;
+    --fg: #1d1d1b;
+    --muted: #5f5f5a;
+    --card: #ffffff;
+    --line: #dddcd6;
+    --accent: #0b6e4f;
+    --accent-fg: #ffffff;
+    --warn-bg: #fff7e0;
+    --warn-line: #e3c56a;
+    --code-bg: #eeeeea;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141514;
+      --fg: #ecece8;
+      --muted: #a8a8a1;
+      --card: #1e201e;
+      --line: #34372f;
+      --accent: #4fc396;
+      --accent-fg: #0d1a14;
+      --warn-bg: #2a2416;
+      --warn-line: #7a6426;
+      --code-bg: #262826;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    padding: 0 16px 48px;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans JP", "Hiragino Sans", sans-serif;
+    font-size: 16px;
+    line-height: 1.7;
+  }
+  main { max-width: 720px; margin: 0 auto; }
+  header { padding: 32px 0 8px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; }
+  h2 { font-size: 1.2rem; margin: 32px 0 8px; padding-top: 16px; border-top: 1px solid var(--line); }
+  h3 { font-size: 1rem; margin: 20px 0 4px; }
+  p, li { overflow-wrap: anywhere; }
+  a { color: var(--accent); }
+  .lead { color: var(--muted); margin: 0; }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 16px;
+    margin: 16px 0;
+  }
+  .card h2 { border: 0; margin: 0 0 8px; padding: 0; }
+  dl { display: grid; grid-template-columns: max-content 1fr; gap: 4px 12px; margin: 12px 0; }
+  dt { color: var(--muted); }
+  dd { margin: 0; font-variant-numeric: tabular-nums; }
+  code, .mono {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.9em;
+    background: var(--code-bg);
+    border-radius: 4px;
+    padding: 1px 4px;
+    overflow-wrap: anywhere;
+  }
+  pre {
+    background: var(--code-bg);
+    border-radius: 8px;
+    padding: 12px;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  pre code { background: transparent; padding: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 12px 0 4px; }
+  .button {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .button.primary { background: var(--accent); color: var(--accent-fg); }
+  .button[aria-disabled="true"] { opacity: 0.5; pointer-events: none; }
+  .note {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-line);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 16px 0;
+  }
+  .status { color: var(--muted); font-size: 0.95rem; margin: 0; }
+  ol li, ul li { margin: 4px 0; }
+  footer { margin-top: 40px; color: var(--muted); font-size: 0.85rem; border-top: 1px solid var(--line); padding-top: 12px; }
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Ghostflow (Android)</h1>
+    <p class="lead">GrapheneOS を含む Android 端末向けの配信ページ。Google Play を経由せず、GitHub Releases の APK (arm64-v8a) を直接インストールします。</p>
+  </header>
+
+  <section class="card" id="latest" aria-live="polite">
+    <h2>最新バージョン</h2>
+    <p class="status" id="status">latest.json を読み込んでいます…</p>
+    <noscript>
+      <p>JavaScript が無効のため最新情報を表示できません。最新の APK は
+        <a href="https://github.com/fangshidong0009/ghostflow-android-distribution/releases/latest">GitHub Releases (releases/latest)</a> から取得してください。</p>
+    </noscript>
+    <dl id="details" class="hidden">
+      <dt>バージョン</dt><dd id="version">-</dd>
+      <dt>tag</dt><dd id="tag" class="mono">-</dd>
+      <dt>サイズ</dt><dd id="size">-</dd>
+      <dt>SHA-256</dt><dd id="sha256" class="mono">-</dd>
+      <dt>署名 (signer) SHA-256</dt><dd id="signer" class="mono">-</dd>
+      <dt>公開日時</dt><dd id="published">-</dd>
+      <dt>対象</dt><dd id="target">-</dd>
+    </dl>
+    <div class="actions">
+      <a class="button primary" id="download" href="#latest" aria-disabled="true" rel="noopener">APK をダウンロード</a>
+      <a class="button" id="obtainium" href="obtainium://add/https://github.com/fangshidong0009/ghostflow-android-distribution">Obtainium に追加</a>
+      <a class="button" id="release" href="https://github.com/fangshidong0009/ghostflow-android-distribution/releases/latest" rel="noopener">GitHub Releases</a>
+    </div>
+    <p class="status hidden" id="fallback"></p>
+  </section>
+
+  <div class="note">
+    <strong>着信通知 (FCM) について。</strong>
+    通話の着信通知は Firebase Cloud Messaging (FCM) で届きます。GrapheneOS では <strong>Sandboxed Google Play</strong>
+    (Apps アプリから Google Play サービスをインストール) が有効でないと着信通知を受け取れません。
+    Sandboxed Google Play は同じユーザープロファイルにインストールし、Ghostflow に通知の権限を許可してください。
+  </div>
+
+  <h2 id="install">GrapheneOS での導入手順</h2>
+  <ol>
+    <li>この端末の <strong>Vanadium</strong> (標準ブラウザ) で上の「APK をダウンロード」を開き、APK を保存します。</li>
+    <li>ダウンロード完了の通知、または Vanadium のダウンロード一覧から APK を開きます。</li>
+    <li>初回は「不明なアプリのインストール」の確認が出ます。Vanadium に対して <strong>「このソースからのインストールを許可」</strong> を有効にします。</li>
+    <li>「インストール」を選びます。既にインストール済みなら、同じ署名の APK として上書き更新され、データは保持されます。</li>
+    <li>インストール後、下の「署名 fingerprint の照合」で改ざんされていないことを確認できます。</li>
+  </ol>
+  <p>対象 ABI は <code>arm64-v8a</code> (64bit ARM) のみです。他の ABI の端末にはインストールできません。</p>
+
+  <h2 id="update">更新方法 (3 種)</h2>
+  <h3>1. Obtainium (推奨)</h3>
+  <p>「Obtainium に追加」を押すと、Obtainium がこの配信 repo の GitHub Releases を監視し、新しいバージョンを通知・更新できます。
+    Obtainium が未導入なら、先に Obtainium 自体を導入してください (Obtainium は本ページからは配布しません)。</p>
+  <h3>2. このページ</h3>
+  <p>このページを開き直し、「APK をダウンロード」から新しい APK を入れ直します。同じ署名なので上書き更新になります。</p>
+  <h3>3. アプリ内「アップデートを確認」</h3>
+  <p>Ghostflow のマイページにある <strong>「アップデートを確認」</strong> を押すと、この <code>latest.json</code> を 1 回だけ読み、
+    新しいバージョンがあれば「ダウンロード」ボタンでブラウザに APK の取得先を渡します。自動チェックや起動時の確認はしません。</p>
+
+  <h2 id="verify">署名 fingerprint の照合</h2>
+  <p>ダウンロードした APK の署名者 (signer) 証明書の SHA-256 が、上に表示されている値と一致することを確認します。
+    Android SDK build-tools の <code>apksigner</code> を使います。</p>
+<pre><code>apksigner verify --print-certs ghostflow-&lt;versionName&gt;-&lt;versionCode&gt;-arm64-v8a.apk
+# "Signer #1 certificate SHA-256 digest:" の値と、このページの「署名 (signer) SHA-256」を比較する</code></pre>
+  <p>APK ファイル自体の SHA-256 は <code>sha256sum</code> (macOS は <code>shasum -a 256</code>) で計算し、「SHA-256」の値と比較できます。
+    Release には同名の <code>.sha256</code> ファイルも添付されています。</p>
+  <p>値が一致しない場合はインストールしないでください。</p>
+
+  <h2 id="about">配信の仕組み</h2>
+  <ul>
+    <li>APK は GitHub Releases (<code>v&lt;versionName&gt;-&lt;versionCode&gt;</code> tag) に添付され、このページは同じ repo の GitHub Pages から配信されます。</li>
+    <li>このページの JavaScript は同一 origin の <code>latest.json</code> (schemaVersion 1) だけを読みます。外部 script、フォント、計測は使いません。</li>
+    <li>ソースと Release の一覧: <a href="https://github.com/fangshidong0009/ghostflow-android-distribution" rel="noopener">https://github.com/fangshidong0009/ghostflow-android-distribution</a></li>
+  </ul>
+  <footer>
+    <p>latest.json: <a href="./latest.json" rel="noopener">https://fangshidong0009.github.io/ghostflow-android-distribution/latest.json</a></p>
+  </footer>
+</main>
+<script>
+(function () {
+  "use strict";
+  var REPO_PREFIX = "https://github.com/fangshidong0009/ghostflow-android-distribution/";
+  var RELEASES_LATEST = "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/latest";
+  var DOWNLOAD_PREFIX = "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/download/";
+  var byId = function (id) { return document.getElementById(id); };
+
+  function text(id, value) {
+    byId(id).textContent = value;
+  }
+
+  function formatSize(bytes) {
+    if (typeof bytes !== "number" || !isFinite(bytes) || bytes < 0) { return "-"; }
+    var mb = bytes / (1024 * 1024);
+    return mb.toFixed(1) + " MB (" + bytes.toLocaleString("ja-JP") + " bytes)";
+  }
+
+  function formatDate(iso) {
+    if (typeof iso !== "string") { return "-"; }
+    var date = new Date(iso);
+    if (isNaN(date.getTime())) { return iso; }
+    return date.toLocaleString("ja-JP", { timeZoneName: "short" });
+  }
+
+  function showFallback(message) {
+    var fallback = byId("fallback");
+    fallback.className = "status";
+    fallback.textContent = "";
+    fallback.appendChild(document.createTextNode(message + " 最新の APK は "));
+    var link = document.createElement("a");
+    link.href = RELEASES_LATEST;
+    link.rel = "noopener";
+    link.textContent = "GitHub Releases (releases/latest)";
+    fallback.appendChild(link);
+    fallback.appendChild(document.createTextNode(" から取得してください。"));
+    text("status", "最新情報を表示できません。");
+  }
+
+  function valid(latest) {
+    return latest && typeof latest === "object" &&
+      latest.schemaVersion === 1 &&
+      typeof latest.versionName === "string" &&
+      typeof latest.versionCode === "number" &&
+      typeof latest.tag === "string" &&
+      typeof latest.apkUrl === "string" &&
+      latest.apkUrl.indexOf(DOWNLOAD_PREFIX) === 0 &&
+      typeof latest.sha256 === "string" &&
+      typeof latest.signerSha256 === "string";
+  }
+
+  function render(latest) {
+    text("version", latest.versionName + " (versionCode " + latest.versionCode + ")");
+    text("tag", latest.tag);
+    text("size", formatSize(latest.size));
+    text("sha256", latest.sha256);
+    text("signer", latest.signerSha256);
+    text("published", formatDate(latest.publishedAt));
+    text("target", (latest.abi || "arm64-v8a") + " / minSdk " + (latest.minSdk || "-") + " / targetSdk " + (latest.targetSdk || "-") +
+      " / package " + (latest.package || "-"));
+    var download = byId("download");
+    download.href = latest.apkUrl;
+    download.removeAttribute("aria-disabled");
+    download.textContent = "APK をダウンロード (" + latest.versionName + ")";
+    if (typeof latest.releaseUrl === "string" && latest.releaseUrl.indexOf(REPO_PREFIX) === 0) {
+      byId("release").href = latest.releaseUrl;
+    }
+    byId("details").className = "";
+    text("status", "GitHub Releases の最新版 (latest.json の tag " + latest.tag + ")。");
+  }
+
+  fetch("./latest.json", { cache: "no-store", credentials: "omit" })
+    .then(function (response) {
+      if (!response.ok) { throw new Error("HTTP " + response.status); }
+      return response.json();
+    })
+    .then(function (latest) {
+      if (!valid(latest)) { throw new Error("latest.json の形式が想定外"); }
+      render(latest);
+    })
+    .catch(function (error) {
+      showFallback("latest.json を読み込めませんでした (" + (error && error.message ? error.message : "不明なエラー") + ")。");
+    });
+})();
+</script>
+</body>
+</html>
