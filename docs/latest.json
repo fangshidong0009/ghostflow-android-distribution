@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "package": "app.ghostflow",
-  "versionName": "2.2.0",
-  "versionCode": 9,
-  "tag": "v2.2.0-9",
-  "apkUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/download/v2.2.0-9/ghostflow-2.2.0-9-arm64-v8a.apk",
-  "sha256": "46c726f813ca1c358f6b87b0c2941a8668b7983f3fc94e4c265696fa28fd7a84",
-  "size": 61850856,
+  "versionName": "2.3.0",
+  "versionCode": 10,
+  "tag": "v2.3.0-10",
+  "apkUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/download/v2.3.0-10/ghostflow-2.3.0-10-arm64-v8a.apk",
+  "sha256": "e7060492eaf17f8676d52b16b571a73adfb0d06344b857b97582be0802d3f025",
+  "size": 61850860,
   "signerSha256": "98:36:77:DA:53:98:28:90:0B:E3:01:A7:B2:A2:37:3F:71:D5:89:E1:60:EA:EA:ED:EA:14:C9:3E:2E:39:AF:85",
   "minSdk": 24,
   "targetSdk": 36,
   "abi": "arm64-v8a",
-  "releaseUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/tag/v2.2.0-9",
-  "publishedAt": "2026-10-27T08:55:37Z"
+  "releaseUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/tag/v2.3.0-10",
+  "publishedAt": "2026-10-27T21:43:10Z"
 }
