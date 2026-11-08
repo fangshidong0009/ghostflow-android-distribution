@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "package": "app.ghostflow",
-  "versionName": "2.4.18",
-  "versionCode": 29,
-  "tag": "v2.4.18-29",
-  "apkUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/download/v2.4.18-29/ghostflow-2.4.18-29-arm64-v8a.apk",
-  "sha256": "bacc261f26b081020020d2860ecb9eb09493f2795163de32a8bfb8e88fb48b60",
+  "versionName": "2.4.19",
+  "versionCode": 30,
+  "tag": "v2.4.19-30",
+  "apkUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/download/v2.4.19-30/ghostflow-2.4.19-30-arm64-v8a.apk",
+  "sha256": "eae32c2326cac604aa02b720d51869c213228120aff94edb0ed126db81f65037",
   "size": 64057173,
   "signerSha256": "98:36:77:DA:53:98:28:90:0B:E3:01:A7:B2:A2:37:3F:71:D5:89:E1:60:EA:EA:ED:EA:14:C9:3E:2E:39:AF:85",
   "minSdk": 24,
   "targetSdk": 36,
   "abi": "arm64-v8a",
-  "releaseUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/tag/v2.4.18-29",
-  "publishedAt": "2026-11-08T15:09:18Z"
+  "releaseUrl": "https://github.com/fangshidong0009/ghostflow-android-distribution/releases/tag/v2.4.19-30",
+  "publishedAt": "2026-11-08T17:32:58Z"
 }
